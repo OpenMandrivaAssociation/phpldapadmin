@@ -6,26 +6,22 @@
 
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
-Version:	1.0.1
-Release:	%mkrel 3
+Version:	1.0.2
+Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
-Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.bz2
+Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
 Patch0:		phpldapadmin-1.0.1-mdv_conf.diff
-%if %mdkversion >= 200700
-Requires(post): desktop-file-utils
-Requires(postun): desktop-file-utils
-%endif
-Requires(pre):  apache-mod_php apache-mod_ssl php-ldap php-xml php-mcrypt php-gettext
-Requires:       apache-mod_php apache-mod_ssl php-ldap php-xml php-mcrypt php-gettext
+Requires(pre):  apache-mod_php php-ldap php-xml php-mcrypt php-gettext
+Requires:       apache-mod_php php-ldap php-xml php-mcrypt php-gettext
 Requires(post):	ccp >= 0.4.0
 BuildRequires:	apache-base >= 2.0.54
 BuildRequires:	ImageMagick
 BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 Obsoletes:	phpLDAPAdmin
 Conflicts:	phpLDAPAdmin
+BuildRoot:	%{_tmppath}/%{name}-buildroot
 
 # Macro for generating an environment variable (%1) with %2 random characters
 %define randstr() %1=`perl -e 'for ($i = 0, $bit = "!", $key = ""; $i < %2; $i++) {while ($bit !~ /^[0-9A-Za-z]$/) { $bit = chr(rand(90) + 32); } $key .= $bit; $bit = "!"; } print "$key";'`
@@ -78,8 +74,11 @@ cat > %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf << EOF
 
 Alias /%{name} /var/www/%{name}
 
-<Directory /var/www/%{name}>
-    Allow from All
+<Directory "/var/www/%{name}">
+    Order deny,allow
+    Deny from all
+    Allow from 127.0.0.1
+    ErrorDocument 403 "Access denied per %{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf"
 </Directory>
 
 # Uncomment the following lines to force a redirect to a working 
@@ -141,16 +140,10 @@ perl -pi -e "s|_BLOWFISH_SECRET_|$BLOWFISH|g" %{_sysconfdir}/%{name}/config.php
 
 %_post_webapp
 %update_menus
-%if %mdkversion >= 200700
-%update_desktop_database
-%endif
 
 %postun
 %_postun_webapp
 %clean_menus
-%if %mdkversion >= 200700
-%clean_desktop_database
-%endif
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
@@ -168,5 +161,3 @@ perl -pi -e "s|_BLOWFISH_SECRET_|$BLOWFISH|g" %{_sysconfdir}/%{name}/config.php
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 %{_datadir}/applications/*.desktop
-
-

@@ -7,7 +7,7 @@
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
 Version:	1.0.2
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
@@ -123,7 +123,7 @@ cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
 Name=%{rname}
 Comment=%{rname} is a web adminstration GUI for OpenLDAP
-Exec="%{_bindir}/www-browser http://localhost/%{name}/"
+Exec=%{_bindir}/www-browser http://localhost/%{name}/
 Icon=%{name}
 Terminal=false
 Type=Application

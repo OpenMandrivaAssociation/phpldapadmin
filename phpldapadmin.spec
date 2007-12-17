@@ -21,7 +21,6 @@ BuildRequires:	ImageMagick
 BuildArch:	noarch
 Obsoletes:	phpLDAPAdmin
 Conflicts:	phpLDAPAdmin
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 
 # Macro for generating an environment variable (%1) with %2 random characters
 %define randstr() %1=`perl -e 'for ($i = 0, $bit = "!", $key = ""; $i < %2; $i++) {while ($bit !~ /^[0-9A-Za-z]$/) { $bit = chr(rand(90) + 32); } $key .= $bit; $bit = "!"; } print "$key";'`

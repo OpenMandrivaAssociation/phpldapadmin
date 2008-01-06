@@ -6,13 +6,13 @@
 
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
-Version:	1.0.2
-Release:	%mkrel 2
-License:	GPL
+Version:	1.1.0.3
+Release:	%mkrel 1
+License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
-Patch0:		phpldapadmin-1.0.1-mdv_conf.diff
+Patch0:		phpldapadmin-1.1.0.3-mdv_conf.diff
 Requires(pre):  apache-mod_php php-ldap php-xml php-mcrypt php-gettext
 Requires:       apache-mod_php php-ldap php-xml php-mcrypt php-gettext
 Requires(post):	ccp >= 0.4.0
@@ -41,11 +41,6 @@ http://localhost/%{name}
 %setup -q -n %{name}-%{version}
 %patch0 -p1
 
-# clean up CVS stuff
-for i in `find . -type d -name CVS` `find . -type f -name .cvs\*` `find . -type f -name .#\*`; do
-    if [ -e "$i" ]; then rm -r $i; fi >&/dev/null
-done
-    
 # fix dir perms
 find . -type d | xargs chmod 755
     

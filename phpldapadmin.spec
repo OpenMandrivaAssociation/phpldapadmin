@@ -7,11 +7,12 @@
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
 Version:	1.1.0.5
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
+Source1:	mandrivaDSPerson.xml
 Patch0:		phpldapadmin-1.1.0.5-config.diff
 Requires(pre):  apache-mod_php php-ldap php-xml php-mcrypt php-gettext
 Requires:       apache-mod_php php-ldap php-xml php-mcrypt php-gettext
@@ -41,6 +42,8 @@ http://localhost/%{name}
 %setup -q -n %{name}-%{version}
 %patch0 -p1
 
+cp %{SOURCE1} templates/creation/
+
 # fix dir perms
 find . -type d | xargs chmod 755
     
@@ -50,7 +53,7 @@ find . -type f | xargs chmod 644
 %build
 
 %install
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -d %{buildroot}/var/www/%{name}
 install -d %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d
@@ -130,7 +133,7 @@ perl -pi -e "s|_BLOWFISH_SECRET_|$BLOWFISH|g" %{_sysconfdir}/%{name}/config.php
 %clean_menus
 
 %clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)

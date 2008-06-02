@@ -58,7 +58,7 @@ rm -rf %{buildroot}
 install -d %{buildroot}/var/www/%{name}
 install -d %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d
 install -d %{buildroot}%{_sysconfdir}/%{name}
-install -d %{buildroot}%{_localstatedir}/%{name}
+install -d %{buildroot}%{_localstatedir}/lib/%{name}
 
 cp -aRf * %{buildroot}/var/www/%{name}/
 
@@ -142,7 +142,7 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %dir %{_sysconfdir}/%{name}
 %attr(0640,apache,root) %config(noreplace) %{_sysconfdir}/%{name}/config.php
 /var/www/%{name}
-%attr(0755,apache,apache) %dir %{_localstatedir}/%{name}
+%attr(0755,apache,apache) %dir %{_localstatedir}/lib/%{name}
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png

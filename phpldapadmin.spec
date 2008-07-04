@@ -7,7 +7,7 @@
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
 Version:	1.1.0.5
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
@@ -58,7 +58,7 @@ rm -rf %{buildroot}
 install -d %{buildroot}/var/www/%{name}
 install -d %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d
 install -d %{buildroot}%{_sysconfdir}/%{name}
-install -d %{buildroot}%{_localstatedir}/lib/%{name}
+install -d %{buildroot}/var/lib/%{name}
 
 cp -aRf * %{buildroot}/var/www/%{name}/
 
@@ -117,6 +117,9 @@ Type=Application
 Categories=X-MandrivaLinux-MoreApplications-Databases;
 EOF
 
+# cleanup
+rm -rf doc/certs
+
 %post
 ccp --delete --ifexists --set "NoOrphans" --ignoreopt config_version --oldfile %{_sysconfdir}/%{name}/config.php --newfile %{_sysconfdir}/%{name}/config.php.rpmnew
 
@@ -146,7 +149,7 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %dir %{_sysconfdir}/%{name}
 %attr(0640,apache,root) %config(noreplace) %{_sysconfdir}/%{name}/config.php
 /var/www/%{name}
-%attr(0755,apache,apache) %dir %{_localstatedir}/lib/%{name}
+%attr(0755,apache,apache) %dir /var/lib/%{name}
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png

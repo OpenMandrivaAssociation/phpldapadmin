@@ -6,8 +6,8 @@
 
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
-Version:	1.1.0.5
-Release:	%mkrel 3
+Version:	1.1.0.6
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
@@ -32,7 +32,7 @@ phpldapadmin is a web-based LDAP administration tool, written in PHP. You can
 browse your LDAP tree, create, delete, edit, and copy entries, perform
 searches, and view your server's schema. You can even copy objects between two
 LDAP servers and recursively delete or copy entire trees. All this from the
-comfort of your web browser. 
+comfort of your web browser.
 
 On the server it is installed on, this should be accessible at
 http://localhost/%{name}
@@ -46,7 +46,7 @@ cp %{SOURCE1} templates/creation/
 
 # fix dir perms
 find . -type d | xargs chmod 755
-    
+
 # fix file perms
 find . -type f | xargs chmod 644
 
@@ -79,9 +79,9 @@ Alias /%{name} /var/www/%{name}
     ErrorDocument 403 "Access denied per %{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf"
 </Directory>
 
-# Uncomment the following lines to force a redirect to a working 
+# Uncomment the following lines to force a redirect to a working
 # SSL aware apache server. This serves as an example.
-# 
+#
 #<IfModule mod_ssl.c>
 #    <LocationMatch /%{name}>
 #        Options FollowSymLinks
@@ -98,9 +98,9 @@ install -d %{buildroot}%{_iconsdir}
 install -d %{buildroot}%{_miconsdir}
 install -d %{buildroot}%{_liconsdir}
 
-convert htdocs/images/logo.jpg -resize 16x16 %{buildroot}%{_miconsdir}/%{name}.png
-convert htdocs/images/logo.jpg -resize 32x32 %{buildroot}%{_iconsdir}/%{name}.png
-convert htdocs/images/logo.jpg -resize 48x48 %{buildroot}%{_liconsdir}/%{name}.png
+convert htdocs/images/logo.png -resize 16x16 %{buildroot}%{_miconsdir}/%{name}.png
+convert htdocs/images/logo.png -resize 32x32 %{buildroot}%{_iconsdir}/%{name}.png
+convert htdocs/images/logo.png -resize 48x48 %{buildroot}%{_liconsdir}/%{name}.png
 
 # install menu entry.
 

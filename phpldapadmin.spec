@@ -7,15 +7,19 @@
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
 Version:	1.1.0.7
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
 Source1:	mandrivaDSPerson.xml
 Patch0:		phpldapadmin-1.1.0.5-config.diff
-Requires(pre):  apache-mod_php php-ldap php-xml php-mcrypt php-gettext
-Requires:       apache-mod_php php-ldap php-xml php-mcrypt php-gettext
+Patch1:		phpldapadmin-1.1.0.7-php53.patch
+# 		Remove the php53 patch when this package is updated to 1.2.x.x versions of phpldapadmin.
+Requires(pre):	apache-mod_php php-ldap php-xml php-mcrypt php-gettext
+Requires:	apache-mod_php
+Requires:	php-ldap >= 5.3.1 
+Requires:	php-xml php-mcrypt php-gettext
 Requires(post):	ccp >= 0.4.0
 BuildRequires:	apache-base >= 2.0.54
 BuildRequires:	ImageMagick
@@ -41,6 +45,7 @@ http://localhost/%{name}
 
 %setup -q -n %{name}-%{version}
 %patch0 -p1
+%patch1 -p1
 
 cp %{SOURCE1} templates/creation/
 

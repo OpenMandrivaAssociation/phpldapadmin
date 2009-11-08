@@ -15,7 +15,8 @@ Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.
 Source1:	mandrivaDSPerson.xml
 Patch0:		phpldapadmin-1.1.0.5-config.diff
 Patch1:		phpldapadmin-1.1.0.7-php53.patch
-# 		Remove the php53 patch when this package is updated to 1.2.x.x versions of phpldapadmin.
+# 		Remove the php53 patch when this package is updated to 1.2.x.x versions of phpldapadmin. 
+# 		Patch1 for bug: #54261.  
 Requires(pre):	apache-mod_php php-ldap php-xml php-mcrypt php-gettext
 Requires:	apache-mod_php
 Requires:	php-ldap >= 5.3.1 

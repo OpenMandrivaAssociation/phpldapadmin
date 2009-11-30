@@ -6,17 +6,14 @@
 
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
-Version:	1.1.0.7
-Release:	%mkrel 2
+Version:	1.2.0.4
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
-Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tar.gz
+Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tgz
 Source1:	mandrivaDSPerson.xml
-Patch0:		phpldapadmin-1.1.0.5-config.diff
-Patch1:		phpldapadmin-1.1.0.7-php53.patch
-# 		Remove the php53 patch when this package is updated to 1.2.x.x versions of phpldapadmin. 
-# 		Patch1 for bug: #54261.  
+Patch0:		phpldapadmin-1.2.0.4-default-config.patch
 Requires(pre):	apache-mod_php php-ldap php-xml php-mcrypt php-gettext
 Requires:	apache-mod_php
 Requires:	php-ldap >= 5.3.1 
@@ -27,10 +24,7 @@ BuildRequires:	ImageMagick
 BuildArch:	noarch
 Obsoletes:	phpLDAPAdmin
 Conflicts:	phpLDAPAdmin
-BuildRoot:	%{_tmppath}/%{name}-buildroot
-
-# Macro for generating an environment variable (%1) with %2 random characters
-%define randstr() %1=`perl -e 'for ($i = 0, $bit = "!", $key = ""; $i < %2; $i++) {while ($bit !~ /^[0-9A-Za-z]$/) { $bit = chr(rand(90) + 32); } $key .= $bit; $bit = "!"; } print "$key";'`
+BuildRoot:	%{_tmppath}/%{name}-%{version}
 
 %description
 phpldapadmin is a web-based LDAP administration tool, written in PHP. You can
@@ -43,10 +37,8 @@ On the server it is installed on, this should be accessible at
 http://localhost/%{name}
 
 %prep
-
 %setup -q -n %{name}-%{version}
 %patch0 -p1
-%patch1 -p1
 
 cp %{SOURCE1} templates/creation/
 
@@ -104,9 +96,11 @@ install -d %{buildroot}%{_iconsdir}
 install -d %{buildroot}%{_miconsdir}
 install -d %{buildroot}%{_liconsdir}
 
-convert htdocs/images/logo.png -resize 16x16 %{buildroot}%{_miconsdir}/%{name}.png
-convert htdocs/images/logo.png -resize 32x32 %{buildroot}%{_iconsdir}/%{name}.png
-convert htdocs/images/logo.png -resize 48x48 %{buildroot}%{_liconsdir}/%{name}.png
+pushd htdocs/images/default
+convert logo.png -resize 16x16 %{buildroot}%{_miconsdir}/%{name}.png
+convert logo.png -resize 32x32 %{buildroot}%{_iconsdir}/%{name}.png
+convert logo.png -resize 48x48 %{buildroot}%{_liconsdir}/%{name}.png
+popd
 
 # install menu entry.
 
@@ -128,11 +122,6 @@ rm -rf doc/certs
 
 %post
 ccp --delete --ifexists --set "NoOrphans" --ignoreopt config_version --oldfile %{_sysconfdir}/%{name}/config.php --newfile %{_sysconfdir}/%{name}/config.php.rpmnew
-
-%randstr BLOWFISH 8
-
-BLOWFISH=`echo -n $BLOWFISH | md5sum | awk '{print $1}'`
-perl -pi -e "s|_BLOWFISH_SECRET_|$BLOWFISH|g" %{_sysconfdir}/%{name}/config.php
 
 %_post_webapp
 %if %mdkversion < 200900

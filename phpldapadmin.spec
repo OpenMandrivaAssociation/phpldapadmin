@@ -42,53 +42,35 @@ http://localhost/%{name}
 
 cp %{SOURCE1} templates/creation/
 
-# fix dir perms
-find . -type d | xargs chmod 755
-
-# fix file perms
-find . -type f | xargs chmod 644
-
 %build
 
 %install
 rm -rf %{buildroot}
 
-install -d %{buildroot}/var/www/%{name}
-install -d %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d
+install -d %{buildroot}%{_localstatedir}/lib/%{name}
+
+install -d -m 755 %{buildroot}%{_datadir}/%{name}
+install -m 644 index.php %{buildroot}%{_datadir}/%{name}
+cp -pr hooks %{buildroot}%{_datadir}/%{name}
+cp -pr htdocs %{buildroot}%{_datadir}/%{name}
+cp -pr lib %{buildroot}%{_datadir}/%{name}
+cp -pr locale %{buildroot}%{_datadir}/%{name}
+cp -pr queries %{buildroot}%{_datadir}/%{name}
+cp -pr templates %{buildroot}%{_datadir}/%{name}
+install -d -m 755 %{buildroot}%{_datadir}/%{name}/tools
+install -m 644 tools/unserialize.php %{buildroot}%{_datadir}/%{name}/tools
+
 install -d %{buildroot}%{_sysconfdir}/%{name}
-install -d %{buildroot}/var/lib/%{name}
+install -m 640 config/config.php.example \
+    %{buildroot}%{_sysconfdir}/%{name}/config.php
 
-cp -aRf * %{buildroot}/var/www/%{name}/
-
-mv %{buildroot}/var/www/%{name}/config/config.php.example %{buildroot}%{_sysconfdir}/%{name}/config.php
-rm -rf %{buildroot}/var/www/%{name}/config %{buildroot}/var/www/%{name}/tools/po
-
-rm -f %{buildroot}/var/www/%{name}/{INSTALL,LICENSE,config.php.example}
-rm -Rf %{buildroot}/var/www/%{name}/doc
-
+install -d %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d
 cat > %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf << EOF
+Alias /%{name} %{_datadir}/%{name}
 
-Alias /%{name} /var/www/%{name}
-
-<Directory "/var/www/%{name}">
-    Order deny,allow
-    Deny from all
-    Allow from 127.0.0.1
-    ErrorDocument 403 "Access denied per %{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf"
+<Directory %{_datadir}/%{name}>
+    Allow from all
 </Directory>
-
-# Uncomment the following lines to force a redirect to a working
-# SSL aware apache server. This serves as an example.
-#
-#<IfModule mod_ssl.c>
-#    <LocationMatch /%{name}>
-#        Options FollowSymLinks
-#        RewriteEngine on
-#        RewriteCond %{SERVER_PORT} !^443$
-#        RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
-#    </LocationMatch>
-#</IfModule>
-
 EOF
 
 # Mandriva Icons
@@ -140,11 +122,11 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc doc/*
-%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf
-%attr(0755,root,root) %dir %{_sysconfdir}/%{name}
+%config(noreplace) %{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf
+%dir %{_sysconfdir}/%{name}
 %attr(0640,apache,root) %config(noreplace) %{_sysconfdir}/%{name}/config.php
-/var/www/%{name}
-%attr(0755,apache,apache) %dir /var/lib/%{name}
+%{_datadir}/%{name}
+%attr(-,apache,apache) %{_localstatedir}/lib/%{name}
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png

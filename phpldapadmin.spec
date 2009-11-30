@@ -7,7 +7,7 @@
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
 Version:	1.2.0.4
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
@@ -69,7 +69,8 @@ cat > %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf << EOF
 Alias /%{name} %{_datadir}/%{name}
 
 <Directory %{_datadir}/%{name}>
-    Allow from all
+    Order allow,deny
+    Allow from localhost
 </Directory>
 EOF
 

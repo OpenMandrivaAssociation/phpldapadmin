@@ -33,9 +33,6 @@ searches, and view your server's schema. You can even copy objects between two
 LDAP servers and recursively delete or copy entire trees. All this from the
 comfort of your web browser.
 
-On the server it is installed on, this should be accessible at
-http://localhost/%{name}
-
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1

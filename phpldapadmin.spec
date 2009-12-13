@@ -7,7 +7,7 @@
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
 Version:	1.2.0.4
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
@@ -66,9 +66,9 @@ cat > %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf << EOF
 Alias /%{name} %{_datadir}/%{name}
 
 <Directory %{_datadir}/%{name}>
-    Order allow,deny
-    Allow from 127.0.0.1
+    Order deny,allow
     Deny from all
+    Allow from 127.0.0.1
     ErrorDocument 403 "Access denied per %{_webappconfdir}/%{name}.conf"
 </Directory>
 EOF

@@ -48,6 +48,7 @@ install -d %{buildroot}%{_localstatedir}/lib/%{name}
 
 install -d -m 755 %{buildroot}%{_datadir}/%{name}
 install -m 644 index.php %{buildroot}%{_datadir}/%{name}
+install -m 644 VERSION %{buildroot}%{_datadir}/%{name}
 cp -pr hooks %{buildroot}%{_datadir}/%{name}
 cp -pr htdocs %{buildroot}%{_datadir}/%{name}
 cp -pr lib %{buildroot}%{_datadir}/%{name}
@@ -121,7 +122,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc doc/*
+%doc INSTALL LICENSE doc/*
 %config(noreplace) %{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf
 %dir %{_sysconfdir}/%{name}
 %attr(0640,apache,root) %config(noreplace) %{_sysconfdir}/%{name}/config.php

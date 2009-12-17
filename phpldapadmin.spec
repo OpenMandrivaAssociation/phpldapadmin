@@ -16,8 +16,10 @@ Source1:	mandrivaDSPerson.xml
 Patch0:		phpldapadmin-1.2.0.4-default-config.patch
 Requires(pre):	apache-mod_php php-ldap php-xml php-mcrypt php-gettext
 Requires:	apache-mod_php
-Requires:	php-ldap >= 5.3.1 
-Requires:	php-xml php-mcrypt php-gettext
+Requires:	php-ldap
+Requires:	php-xml
+Requires:	php-mcrypt
+Requires:	php-gettext
 Requires(post):	ccp >= 0.4.0
 BuildRequires:	apache-base >= 2.0.54
 BuildRequires:	ImageMagick

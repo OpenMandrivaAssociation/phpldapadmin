@@ -7,7 +7,7 @@
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
 Version:	1.2.0.4
-Release:	%mkrel 5
+Release:	%mkrel 6
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/

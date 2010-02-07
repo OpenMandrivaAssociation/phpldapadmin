@@ -7,25 +7,25 @@
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
 Version:	1.2.0.5
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tgz
 Source1:	mandrivaDSPerson.xml
 Patch0:		phpldapadmin-1.2.0.4-default-config.patch
-Requires(pre):	apache-mod_php php-ldap php-xml php-mcrypt php-gettext
 Requires:	apache-mod_php
 Requires:	php-ldap
 Requires:	php-xml
 Requires:	php-mcrypt
 Requires:	php-gettext
 Requires(post):	ccp >= 0.4.0
-BuildRequires:	apache-base >= 2.0.54
+%if %mdkversion < 201010
+Requires(post):   rpm-helper
+Requires(postun):   rpm-helper
+%endif
 BuildRequires:	ImageMagick
 BuildArch:	noarch
-Obsoletes:	phpLDAPAdmin
-Conflicts:	phpLDAPAdmin
 BuildRoot:	%{_tmppath}/%{name}-%{version}
 
 %description
@@ -64,8 +64,8 @@ install -d %{buildroot}%{_sysconfdir}/%{name}
 install -m 640 config/config.php.example \
     %{buildroot}%{_sysconfdir}/%{name}/config.php
 
-install -d %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d
-cat > %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf << EOF
+install -d -m 755 %{buildroot}%{webappconfdir}
+cat > %{buildroot}%{webappconfdir}/%{name}.conf << EOF
 Alias /%{name} %{_datadir}/%{name}
 
 <Directory %{_datadir}/%{name}>
@@ -106,15 +106,20 @@ EOF
 rm -rf doc/certs
 
 %post
-ccp --delete --ifexists --set "NoOrphans" --ignoreopt config_version --oldfile %{_sysconfdir}/%{name}/config.php --newfile %{_sysconfdir}/%{name}/config.php.rpmnew
-
+ccp --delete --ifexists --set "NoOrphans" --ignoreopt config_version \
+    --oldfile %{_sysconfdir}/%{name}/config.php \
+    --newfile %{_sysconfdir}/%{name}/config.php.rpmnew
+%if %mdkversion < 201010
 %_post_webapp
+%endif
 %if %mdkversion < 200900
 %update_menus
 %endif
 
 %postun
+%if %mdkversion < 201010
 %_postun_webapp
+%endif
 %if %mdkversion < 200900
 %clean_menus
 %endif
@@ -125,7 +130,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc INSTALL LICENSE doc/*
-%config(noreplace) %{_sysconfdir}/httpd/conf/webapps.d/%{name}.conf
+%config(noreplace) %{webappconfdir}/%{name}.conf
 %dir %{_sysconfdir}/%{name}
 %attr(0640,apache,root) %config(noreplace) %{_sysconfdir}/%{name}/config.php
 %{_datadir}/%{name}

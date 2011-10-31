@@ -1,3 +1,12 @@
+%if %mandriva_branch == Cooker
+# Cooker
+%define release %mkrel 1
+%else
+# Old distros
+%define subrel 1
+%define release %mkrel 0
+%endif
+
 # (oe) undefining these makes the build _real_ quick.
 %undefine __find_provides
 %undefine __find_requires
@@ -6,25 +15,26 @@
 
 Summary:	A web-based LDAP administration tool
 Name:		phpldapadmin
-Version:	1.2.0.5
-Release:	%mkrel 3
+Version:	1.2.2
+Release:	%{release}
 License:	GPLv2+
 Group:		System/Servers
 URL:		http://phpldapadmin.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tgz
 Source1:	mandrivaDSPerson.xml
+Source2:	phpldapadmin-16x16.png
+Source3:	phpldapadmin-32x32.png
+Source4:	phpldapadmin-48x48.png
 Patch0:		phpldapadmin-1.2.0.4-default-config.patch
 Requires:	apache-mod_php
 Requires:	php-ldap
 Requires:	php-xml
 Requires:	php-mcrypt
 Requires:	php-gettext
-Requires(post):	ccp >= 0.4.0
 %if %mdkversion < 201010
 Requires(post):   rpm-helper
 Requires(postun):   rpm-helper
 %endif
-BuildRequires:	ImageMagick
 BuildArch:	noarch
 BuildRoot:	%{_tmppath}/%{name}-%{version}
 
@@ -81,13 +91,9 @@ install -d %{buildroot}%{_iconsdir}
 install -d %{buildroot}%{_miconsdir}
 install -d %{buildroot}%{_liconsdir}
 
-pushd htdocs/images/default
-convert logo.png -resize 16x16 %{buildroot}%{_miconsdir}/%{name}.png
-convert logo.png -resize 32x32 %{buildroot}%{_iconsdir}/%{name}.png
-convert logo.png -resize 48x48 %{buildroot}%{_liconsdir}/%{name}.png
-popd
-
-# install menu entry.
+install -m0644 %{SOURCE2} %{buildroot}%{_miconsdir}/%{name}.png
+install -m0644 %{SOURCE3} %{buildroot}%{_iconsdir}/%{name}.png
+install -m0644 %{SOURCE4} %{buildroot}%{_liconsdir}/%{name}.png
 
 # XDG menu
 install -d %{buildroot}%{_datadir}/applications
@@ -106,22 +112,13 @@ EOF
 rm -rf doc/certs
 
 %post
-ccp --delete --ifexists --set "NoOrphans" --ignoreopt config_version \
-    --oldfile %{_sysconfdir}/%{name}/config.php \
-    --newfile %{_sysconfdir}/%{name}/config.php.rpmnew
 %if %mdkversion < 201010
 %_post_webapp
-%endif
-%if %mdkversion < 200900
-%update_menus
 %endif
 
 %postun
 %if %mdkversion < 201010
 %_postun_webapp
-%endif
-%if %mdkversion < 200900
-%clean_menus
 %endif
 
 %clean

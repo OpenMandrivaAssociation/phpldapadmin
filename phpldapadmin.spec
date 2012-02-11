@@ -1,9 +1,9 @@
 %if %mandriva_branch == Cooker
 # Cooker
-%define release %mkrel 2
+%define release %mkrel 3
 %else
 # Old distros
-%define subrel 1
+%define subrel 2
 %define release %mkrel 0
 %endif
 
@@ -26,6 +26,7 @@ Source2:	phpldapadmin-16x16.png
 Source3:	phpldapadmin-32x32.png
 Source4:	phpldapadmin-48x48.png
 Patch0:		phpldapadmin-1.2.0.4-default-config.patch
+Patch1:		phpldapadmin-1.2.2-CVE-2012-0834.diff
 Requires:	apache-mod_php
 Requires:	php-ldap
 Requires:	php-xml
@@ -48,6 +49,7 @@ comfort of your web browser.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1
+%patch1 -p1
 
 cp %{SOURCE1} templates/creation/
 

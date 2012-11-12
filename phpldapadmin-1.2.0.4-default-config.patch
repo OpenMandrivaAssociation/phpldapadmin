@@ -1,0 +1,23 @@
+diff -Naur -x '*~' -x '*.rej' -x '*.orig' phpldapadmin-1.2.0.4/config/config.php.example phpldapadmin-1.2.0.4-default-config/config/config.php.example
+--- phpldapadmin-1.2.0.4/config/config.php.example	2009-09-20 03:49:27.000000000 +0200
++++ phpldapadmin-1.2.0.4-default-config/config/config.php.example	2009-11-30 13:37:54.000000000 +0100
+@@ -60,6 +60,7 @@
+    This directory must be readable and writable by your web server. */
+ // $config->custom->jpeg['tmpdir'] = '/tmp';     // Example for Unix systems
+ #  $config->custom->jpeg['tmpdir'] = 'c:\\temp'; // Example for Windows systems
++$config->custom->jpeg['tmpdir'] = "/var/lib/phpldapadmin";
+ 
+ /* Set this to (bool)true if you do NOT want a random salt used when
+    calling crypt().  Instead, use the first two letters of the user's
+diff -Naur -x '*~' -x '*.rej' -x '*.orig' phpldapadmin-1.2.0.4/lib/functions.php phpldapadmin-1.2.0.4-default-config/lib/functions.php
+--- phpldapadmin-1.2.0.4/lib/functions.php	2009-09-20 03:49:27.000000000 +0200
++++ phpldapadmin-1.2.0.4-default-config/lib/functions.php	2009-11-30 13:34:41.000000000 +0100
+@@ -15,7 +15,7 @@
+  */
+ define('HTDOCDIR',sprintf('%s/',realpath(LIBDIR.'../htdocs/')));
+ define('LANGDIR',sprintf('%s/',realpath(LIBDIR.'../locale/')));
+-define('CONFDIR',sprintf('%s/',realpath(LIBDIR.'../config')));
++define('CONFDIR','/etc/phpldapadmin/');
+ define('QUERYDIR',sprintf('%s/',realpath(LIBDIR.'../queries/')));
+ define('TMPLDIR',sprintf('%s/',realpath(LIBDIR.'../templates/')));
+ define('DOCDIR',sprintf('%s/',realpath(LIBDIR.'../doc/')));

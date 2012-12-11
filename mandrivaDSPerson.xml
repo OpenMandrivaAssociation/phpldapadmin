@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
+<template>
+<title>Mandriva Directory User</title>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<icon>images/user.png</icon>
+<description>New Mandriva/Samba/Cyrus user</description>
+<askcontainer>1</askcontainer>
+<rdn>uid</rdn>
+<visible>1</visible>
+
+<objectClasses>
+<objectClass id="inetOrgPerson"></objectClass>
+<objectClass id="sambaSAMAccount"></objectClass>
+<objectClass id="posixAccount"></objectClass>
+<objectClass id="shadowAccount"></objectClass>
+<objectClass id="mailAccount"></objectClass>
+<objectClass id="lmcUserObject"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="givenName">
+	<display>First name</display>
+	<icon>images/uid.png</icon>
+	<onchange>autoFill:cn,%givenName% %sn%</onchange>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+<attribute id="sn">
+	<display>Last name</display>
+	<onchange>autoFill:cn,%givenName% %sn%</onchange>
+	<onchange>autoFill:uid,%givenName/l%.%sn/l%</onchange>
+	<onchange>autoFill:mail,%givenName/l%.%sn/l%</onchange>
+	<onchange>autoFill:mailbox,%givenName/l%.%sn/l%</onchange>
+	<order>2</order>
+	<page>1</page>
+</attribute>
+<attribute id="cn">
+	<display>Common Name</display>
+	<order>3</order>
+	<page>1</page>
+</attribute>
+<attribute id="uid">
+	<display>User ID</display>
+	<onchange>autoFill:homeDirectory,/home/%gidNumber|0-0/T%/%uid/l%</onchange>
+	<order>4</order>
+	<page>1</page>
+	<spacer>1</spacer>
+</attribute>
+<attribute id="uidNumber">
+	<display>UID Number</display>
+	<hint>Automatically determined</hint>
+	<icon>images/uid.png</icon>
+	<order>5</order>
+	<page>1</page>
+	<spacer>1</spacer>
+	<presubmit>=php.GetNextNumber(/,uid)</presubmit>
+</attribute>
+<attribute id="gidNumber">
+	<display>GID Number</display>
+	<icon>images/uniquegroup.png</icon>
+	<onchange>autoFill:homeDirectory,/home/%gidNumber|0-0/T%/%uid/l%</onchange>
+	<order>6</order>
+	<page>1</page>
+	<option><![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%;;;;cn)]]></option>
+</attribute>
+<attribute id="homeDirectory">
+	<display>Home directory</display>
+	<order>7</order>
+	<page>1</page>
+</attribute>
+<attribute id="loginShell">
+	<display>Login shell</display>
+	<icon>images/terminal.png</icon>
+	<order>8</order>
+	<page>1</page>
+	<spacer>1</spacer>
+	<type>select</type>
+        <value id="/bin/bash">/bin/bash</value>
+        <value id="/bin/csh">/bin/csh</value>
+        <value id="/bin/ksh">/bin/ksh</value>
+        <value id="/bin/sh">/bin/sh</value>
+        <value id="/bin/tsh">/bin/tsh</value>
+        <value id="/bin/zsh">/bin/zsh</value>
+	<!-- <value><![CDATA[=php.PickList(/;(&(objectClass=posixAccount));loginShell;%loginShell%;;;;loginShell)]]></value> -->
+</attribute>
+<attribute id="sambaSID">
+	<display>Samba SID</display>
+	<helper>
+		<id>sidsuffix</id>
+		<location>side</location>
+		<value></value>
+	</helper>
+	<order>9</order>
+	<page>1</page>
+	<post>=php.Join(-,(%sambaSID%,%sidsuffix%))</post>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaDomain));sambaSID;%sambaSID% (%sambaDomainName%);;;;sambaDomainName)]]></value>
+</attribute>
+<attribute id="sambaPrimaryGroupSID">
+	<display>Primary Group ID</display>
+	<helper>
+		<id>sidpgsuffix</id>
+		<location>side</location>
+		<value></value>
+	</helper>
+	<order>10</order>
+	<page>1</page>
+	<post>=php.Join(-,(%sambaPrimaryGroupSID%,%sidpgsuffix%))</post>
+	<spacer>1</spacer>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaGroupMapping));sambaSID;%sambaSID% (%cn%);sambaPrimaryGroupSID;;;;cn)]]></value>
+</attribute>
+<attribute id="sambaAcctFlags">
+	<hidden>1</hidden>
+	<value>[U]</value>
+	<spacer>1</spacer>
+</attribute>
+<attribute id="mail">
+    <display>Email</display>
+    <icon>images/mail.png</icon>
+    <onchange>autoFill:maildrop,%mail%</onchange>
+    <order>12</order>
+    <page>1</page>
+</attribute>
+<attribute id="mailalias">
+	<display>Mailalias</display>
+	<order>13</order>
+	<page>1</page>
+</attribute>
+<attribute id="mailbox">
+	<display>Mailbox</display>
+	<order>14</order>
+	<page>1</page>
+</attribute>
+<attribute id="maildrop">
+	<display>Maildrop</display>
+	<order>15</order>
+	<page>1</page>
+</attribute>
+<attribute id="mailenable">
+	<display>Mailenable</display>
+	<value>OK</value>
+	<order>16</order>
+</attribute>
+<attribute id="mailuserquota">
+	<display>Mailuserquota</display>
+	<order>17</order>
+	<page>1</page>
+	<spacer>1</spacer>
+</attribute>
+<attribute id="mmcUserObject">
+	<display>mmc - UserObject</display>
+	<order>18</order>
+	<page>1</page>
+</attribute>
+<attribute id="mmcPrefMode">
+	<display>mmc - PrefMode</display>
+	<order>19</order>
+	<page>1</page>	
+</attribute>
+<attribute id="mmcPrinterAllowed">
+	<display>mmc - PrinterAllowed</display>
+	<order>20</order>
+	<page>1</page>
+	<spacer>1</spacer>	
+</attribute>
+<attribute id="userPassword">
+	<display>Password</display>
+	<helper>
+		<default>md5</default>
+		<display>Encryption</display>
+		<id>enc</id>
+		<location>side</location>
+		<value>blowfish</value>
+		<value>clear</value>
+		<value>crypt</value>
+		<value>ext_des</value>
+		<value>md5</value>
+		<value>md5crypt</value>
+		<value>sha</value>
+		<value>smd5</value>
+		<value>ssha</value>
+	</helper>
+	<icon>images/lock.png</icon>
+	<onchange>autoFill:sambaLMPassword,%userPassword%</onchange>
+	<onchange>autoFill:sambaNTPassword,%userPassword%</onchange>
+	<order>21</order>
+	<page>1</page>
+	<post>=php.Password(%enc%,%userPassword%)</post>
+	<type>password</type>
+	<verify>1</verify>
+</attribute>
+<attribute id="sambaLMPassword">
+	<display>LM Password</display>
+	<order>22</order>
+	<page>1</page>
+	<post>=php.SambaPassword(LM,%sambaLMPassword%)</post>
+	<type>password</type>
+</attribute>
+<attribute id="sambaNTPassword">
+	<display>NT Password</display>
+	<order>23</order>
+	<page>1</page>
+	<post>=php.SambaPassword(NT,%sambaNTPassword%)</post>
+	<spacer>1</spacer>
+	<type>password</type>
+</attribute>
+</attributes>
+</template>

@@ -70,8 +70,8 @@ install -d %{buildroot}%{_sysconfdir}/%{name}
 install -m 640 config/config.php.example \
     %{buildroot}%{_sysconfdir}/%{name}/config.php
 
-install -d -m 755 %{buildroot}%{webappconfdir}
-cat > %{buildroot}%{webappconfdir}/%{name}.conf << EOF
+install -d -m 755 %{buildroot}%{_webappconfdir}
+cat > %{buildroot}%{_webappconfdir}/%{name}.conf << EOF
 Alias /%{name} %{_datadir}/%{name}
 
 <Directory %{_datadir}/%{name}>
@@ -114,7 +114,7 @@ rm -rf doc/certs
 %files
 %defattr(-,root,root)
 %doc INSTALL LICENSE doc/*
-%config(noreplace) %{webappconfdir}/%{name}.conf
+%config(noreplace) %{_webappconfdir}/%{name}.conf
 %dir %{_sysconfdir}/%{name}
 %attr(0640,apache,root) %config(noreplace) %{_sysconfdir}/%{name}/config.php
 %{_datadir}/%{name}

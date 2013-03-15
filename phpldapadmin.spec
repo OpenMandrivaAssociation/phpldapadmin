@@ -1,6 +1,6 @@
 %if %mandriva_branch == Cooker
 # Cooker
-%define release 4
+%define release 5
 %else
 # Old distros
 %define subrel 2
@@ -75,9 +75,7 @@ cat > %{buildroot}%{_webappconfdir}/%{name}.conf << EOF
 Alias /%{name} %{_datadir}/%{name}
 
 <Directory %{_datadir}/%{name}>
-    Order deny,allow
-    Deny from all
-    Allow from 127.0.0.1
+    Require host 127.0.0.1
     ErrorDocument 403 "Access denied per %{_webappconfdir}/%{name}.conf"
 </Directory>
 EOF

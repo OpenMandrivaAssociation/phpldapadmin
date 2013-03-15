@@ -1,6 +1,6 @@
 %if %mandriva_branch == Cooker
 # Cooker
-%define release %mkrel 3
+%define release 4
 %else
 # Old distros
 %define subrel 2
@@ -32,12 +32,7 @@ Requires:	php-ldap
 Requires:	php-xml
 Requires:	php-mcrypt
 Requires:	php-gettext
-%if %mdkversion < 201010
-Requires(post):   rpm-helper
-Requires(postun):   rpm-helper
-%endif
 BuildArch:	noarch
-BuildRoot:	%{_tmppath}/%{name}-%{version}
 
 %description
 phpldapadmin is a web-based LDAP administration tool, written in PHP. You can
@@ -56,7 +51,6 @@ cp %{SOURCE1} templates/creation/
 %build
 
 %install
-rm -rf %{buildroot}
 
 install -d %{buildroot}%{_localstatedir}/lib/%{name}
 
@@ -113,18 +107,9 @@ EOF
 # cleanup
 rm -rf doc/certs
 
-%post
-%if %mdkversion < 201010
-%_post_webapp
-%endif
 
-%postun
-%if %mdkversion < 201010
-%_postun_webapp
-%endif
 
 %clean
-rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)

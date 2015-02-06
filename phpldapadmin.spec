@@ -1,10 +1,10 @@
 %if %mandriva_branch == Cooker
 # Cooker
-%define release 5
+%define release 6
 %else
 # Old distros
 %define subrel 2
-%define release %mkrel 0
+%define release 1
 %endif
 
 # (oe) undefining these makes the build _real_ quick.

@@ -1,2 +1,9 @@
+removed_sources:
+  phpldapadmin-1.2.2.tgz: 2904923eb25173d108b556c70fb3d42cd6e0e289
 sources:
-  "phpldapadmin-1.2.2.tgz": 2904923eb25173d108b556c70fb3d42cd6e0e289
+  mandrivaDSPerson.xml: 41db8c5d9b84634db0098d311adf7a8d1dcccca3
+  phpldapadmin-1.2.3.tgz: 669fca66c75e24137e106fdd02e3832f81146e23
+  phpldapadmin-16x16.png: b2847d31e0c7a427300fce15331131370b15784a
+  phpldapadmin-32x32.png: 848d5523782fbac437cb78152459df954ee6dc32
+  phpldapadmin-48x48.png: 188661251c9e333ba75795c9b8a52fb4abaf6f8f
+  rosaDSPerson.xml: 03ec8c7cfe1aca12124c5dde600861052207a697

@@ -10,7 +10,7 @@ Version:	1.2.3
 Release:	5
 License:	GPLv2+
 Group:		System/Servers
-URL:		http://phpldapadmin.sourceforge.net/
+URL:		https://phpldapadmin.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/phpldapadmin/%{name}-%{version}.tgz
 Source1:	rosaDSPerson.xml
 Source2:	phpldapadmin-16x16.png
